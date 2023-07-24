@@ -9,6 +9,8 @@ const X_MIN = Number(scriptProperties.getProperty('X_MIN')!)
 const X_MAX = Number(scriptProperties.getProperty('X_MAX')!)
 const Y_MIN = Number(scriptProperties.getProperty('Y_MIN')!)
 const Y_MAX = Number(scriptProperties.getProperty('Y_MAX')!)
+const C_REAL = Number(scriptProperties.getProperty('C_REAL')!)
+const C_IMAG = Number(scriptProperties.getProperty('C_IMAG')!)
 const MAX_ITERATIONS = Number(scriptProperties.getProperty('MAX_ITERATIONS')!)
 const CELL_SIZE = Number(scriptProperties.getProperty('CELL_SIZE')!)
 
@@ -20,7 +22,7 @@ function rgb2Hex (r: number, g: number, b: number): string {
   return '#' + ('0' + r.toString(16)).slice(-2) + ('0' + g.toString(16)).slice(-2) + ('0' + b.toString(16)).slice(-2)
 }
 
-function mandelbrot (): void {
+function julia (): void {
   // 行数の取得。
   const lastRow = sheet.getLastRow()
   // 不足している行数を計算。
@@ -39,24 +41,24 @@ function mandelbrot (): void {
   for (let i = 0; i < WIDTH; i++) sheet.setColumnWidth(i + 1, CELL_SIZE)
   for (let i = 0; i < HEIGHT; i++) sheet.setRowHeight(i + 1, CELL_SIZE)
 
-  // マンデルブロ集合の計算。
+  // ジュリア集合の計算。
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
-      let zx = 0
-      let zy = 0
-      let zx2 = 0
-      let zy2 = 0
+      let zReal = X_MIN + (X_MAX - X_MIN) * x / WIDTH
+      let zImag = Y_MIN + (Y_MAX - Y_MIN) * y / HEIGHT
       let i = 0
-      while (zx2 + zy2 <= 4 && i < MAX_ITERATIONS) {
-        zy = 2 * zx * zy + (y / HEIGHT) * (Y_MAX - Y_MIN) + Y_MIN
-        zx = zx2 - zy2 + (x / WIDTH) * (X_MAX - X_MIN) + X_MIN
-        zx2 = zx * zx
-        zy2 = zy * zy
-        i++
+      for (; i < MAX_ITERATIONS; i++) {
+        const zReal2 = zReal * zReal
+        const zImag2 = zImag * zImag
+        if (zReal2 + zImag2 > 4) break
+        const zRealTemp = zReal2 - zImag2 + C_REAL
+        const zImagTemp = 2 * zReal * zImag + C_IMAG
+        zReal = zRealTemp
+        zImag = zImagTemp
       }
       sheet.getRange(y + 1, x + 1).setBackground(rgb2Hex(0, 0, i * 255 / MAX_ITERATIONS))
     }
   }
 }
 
-export { mandelbrot }
+export { julia }
