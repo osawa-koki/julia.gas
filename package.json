@@ -1,0 +1,26 @@
+{
+  "name": "julia.gas",
+  "version": "1.0.0",
+  "description": "🕵️‍♀️🕵️‍♀️🕵️‍♀️ GASを使用してGoogleスプレッドシート上にジュリア集合を描画してみる！",
+  "repository": "https://github.com/osawa-koki/julia.gas.git",
+  "author": "osawa-koki <github@osawa.dev>",
+  "license": "Apache-2.0",
+  "private": false,
+  "scripts": {
+    "lint:check": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "test": "echo \"Error: no test specified.\" && exit 0",
+    "save:gas": "clasp push",
+    "open:gas": "clasp open"
+  },
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.64",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^36.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "typescript": "^5.1.6"
+  }
+}
